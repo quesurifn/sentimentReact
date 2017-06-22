@@ -1,0 +1,32 @@
+img.title {
+    width:250px;
+    height:150px;
+    margin:40px auto;
+    display:block;
+    border-radius:5px;
+    
+}
+img.trump {
+    height: 120px;
+    position: relative;
+    bottom:5px;
+    border-radius: 50%;
+    margin-right:20px;
+    cursor:pointer;
+}
+img.twitter {
+    height: 150px;
+    border-radius: 50%;
+    position:relative;
+    bottom:20px;
+    cursor:pointer;
+}
+.homeFlex {
+    display: flex;
+    justify-content:center;
+    width: 25%;
+    margin: 150px auto;
+}
+body {
+    background: #1A1A1A;
+}
