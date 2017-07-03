@@ -15,19 +15,19 @@ class Dashboard extends React.Component {
     }
     
 
-    componentWillMount() {
+    componentDidMount() {
         var connection = new WebSocket('ws://trump-sentiment.herokuapp.com/');
         
-        connection.onopen = function () {
-            connection.send('Ping');
-        };
-        connection.onmessage = function (e) {
+        connection.onmessage = (e) => {
+            e = JSON.parse(e.data)
             console.log(e)
-            if (e.data.main) {
-                this.state.tweet = e.data.main.featuredTweet
-                this.state.overallSentiment = e.data.main.sentiment
+            if (e.main) {
+                this.setState({
+                    tweet: e.main.featuredTweet,
+                    overallSentiment: e.main.sentiment
+                })
             }
-        };
+        }
     }
 
 
