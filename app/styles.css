@@ -1,3 +1,4 @@
+/* HOMEPAGE */
 img.title {
     width:250px;
     height:150px;
@@ -21,6 +22,8 @@ img.twitter {
     bottom:20px;
     cursor:pointer;
 }
+/* DASHBOARD */
+
 .homeFlex {
     display: flex;
     justify-content:center;
@@ -45,13 +48,61 @@ body {
     padding-right: 0 !important;
     padding-left: 0 !important;
 }
-div {
+div.box {
     background: #303030;
 }
 .subtitle { 
     position: absolute;
     font-size: 14px;
-    bottom: 0;
+    top: calc(3rem + 10px);
     left: 20px;
+    color: #d3d3d3 !important;
+}
+.subtitleTop {
+    position: absolute;
+    font-size: 14px;
+    top: 10px;
+    left: 20px;
+    color: #d3d3d3 !important;
+}
+.marginTopSM {
+    margin-top:3rem;
+    padding: 2rem;
+    width:100%;
 }
 
+.col-md-2 {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.marginR {
+    margin-right: 15px !important;
+}
+.flexStacked {
+    display:flex;
+    flex-direction: column-reverse;
+}
+.fixedH {
+    height: 81px;
+    position: relative;
+}
+.bigNum {
+    font-size: 30px;
+    color: #d3d3d3;
+    position: absolute;
+    right: 50%;
+    bottom: 25%;
+}
+.bigNumEmoji {
+    font-size: 30px;
+    color: #d3d3d3;
+    position: absolute;
+    right: 50%;
+    bottom: 1%;
+}
+.marginTopXS {
+    margin-top:3rem;
+}
+.marginTop15 {
+    margin-top:15px;
+}

@@ -2,7 +2,10 @@ import React from 'react'
 import styles from '../styles.css'
 
 import { Link } from 'react-router'
-import { Chart } from 'react-google-charts';
+
+
+import { SingleBar } from './SingleBar'
+import { EmojiSentiment } from './emoji'
 
 
 class Dashboard extends React.Component {
@@ -12,32 +15,9 @@ class Dashboard extends React.Component {
         this.state = {
             tweet: '',
             overallSentiment: 0,
-            lineData:[],
-            options: {
-                title: 'Senitment Trend',
-                vAxis: { minValue: -30, maxValue: 30 },
-                titleTextStyle: {
-                    color: '#d3d3d3',
-                    textPosition: 'none' 
-                },
-                backgroundColor: '#1a1a1a',
-                hAxis: {
-                    baselineColor: 'none',
-                    textStyle:{color: 'none'},
-                    gridlines: {
-                        color: 'transparent',
-                    }
-                },
-                vAxis: {
-                    textStyle: {color: '#d3d3d3'},
-                    gridlines: {
-                        count: 5,
-                        color: '#333333'
-                    }
-                },
-                legend: 'none'
-            },
-            
+            pos: 0,
+            neg: 0,
+            neu: 0
         }
     }
     
@@ -49,13 +29,12 @@ class Dashboard extends React.Component {
             e = JSON.parse(e.data)
             console.log(e)
             if (e.main) {
-                let lineArr = this.state.lineData.slice()
-                lineArr.push({"date": new Date().getTime(), score: e.main.sentiment.score })
                 this.setState({
                     tweet: e.main.featuredTweet,
-                    overallSentiment: e.main.sentiment,
-                    lineData: lineArr
-                    
+                    overallSentiment: e.main.sentiment.score,
+                    pos: e.main.pos,
+                    neg: e.main.neg,
+                    neu: e.main.neu
                 })
             }
         }
@@ -63,24 +42,52 @@ class Dashboard extends React.Component {
 
 
     render() {
+        const singleFillColor = '#327FC5';
+
         return (
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-12 box">
                         <div className="Tweet">
                             {this.state.tweet}
-                            <p className="subtitle">Tweets</p> 
+                            <p className="subtitleTop">Tweets</p> 
+                        </div>
+                    </div>
+                    <div className="col-md-2 marginR">
+                        <div className="marginTopSM box">
+                            <SingleBar data={this.state.pos} fillColor={"RoyalBlue"} />  
+                            <p className="subtitle">Positive Tweets</p> 
+                        </div>
+                    </div>
+                    <div className="col-md-2 marginR">
+                        <div className="marginTopSM box">
+                            <SingleBar data={this.state.neg} fillColor={"Tomato"} />  
+                            <p className="subtitle">Negative Tweets</p> 
+                        </div>
+                    </div>
+                    <div className="col-md-2 marginR">
+                        <div className="marginTopSM box">
+                            <SingleBar data={this.state.neu} fillColor={"Orange"} />  
+                            <p className="subtitle">Neutral Tweets</p> 
                         </div>
                     </div>
                     <div className="col-md-2">
-                 
-                    </div>
-                    <div className="col-md-10">
-                    
+                        <div className="marginTopXS flexStacked">
+                            <div className="fixedH box marginTop15">
+                                <span className="bigNum">{this.state.overallSentiment}</span>
+                                <p className="subtitleTop">Score</p> 
+                            </div>
+                            <div className="fixedH box">
+                                <EmojiSentiment className="bigNum" score={this.state.overallSentiment} />
+                                <p className="subtitleTop">Overall Sentiment</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+
 export default Dashboard
