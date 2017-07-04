@@ -106,3 +106,17 @@ div.box {
 .marginTop15 {
     margin-top:15px;
 }
+.tweetCounter {
+    color:#d3d3d3; 
+    font-size: 30px;
+    position: absolute;
+    right: 30%;
+    bottom: 25%;
+}
+.date {
+    color:#d3d3d3;
+    position: absolute;
+    bottom: 0;
+    left: 2rem;
+}
+

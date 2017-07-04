@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../styles.css'
 
-import {VictoryBar} from 'victory'
+import {VictoryBar , VictoryChart} from 'victory'
 
 
 export class SingleBar extends React.Component {
@@ -9,11 +9,13 @@ export class SingleBar extends React.Component {
     render() {
         return (
             <VictoryBar
-                data={this.props.chartData}
+                data={this.props.data}
+                domain={{ x: [1, 1], y: [0, 30] }}
                 style={{
-                    data: {fill: this.props.fillColor, strokeWidth: 50},
+                    data: {fill: this.props.fillColor, strokeWidth: 80},
                 }}
              />
+
         );
     }
 
