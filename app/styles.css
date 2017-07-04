@@ -28,12 +28,30 @@ img.twitter {
     margin: 150px auto;
 }
 body {
-    background: #1A1A1A;
+    background: #212020;
+    overflow-x: hidden;
 }
 .Tweet {
-    color:white;
+    color:#d3d3d3;
     text-align: center;
-    font-size:30px; 
-    margin-top:4rem;
-   
+    font-size:25px;
+    height:200px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    align-self: center;
 }
+.row {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+div {
+    background: #303030;
+}
+.subtitle { 
+    position: absolute;
+    font-size: 14px;
+    bottom: 0;
+    left: 20px;
+}
+
