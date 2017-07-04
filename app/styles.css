@@ -71,7 +71,7 @@ div.box {
     width:100%;
 }
 
-.col-md-2 {
+.col-md-2, .col-md-3 {
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
@@ -94,11 +94,11 @@ div.box {
     bottom: 25%;
 }
 .bigNumEmoji {
-    font-size: 30px;
+    font-size: 28px;
     color: #d3d3d3;
     position: absolute;
     right: 50%;
-    bottom: 1%;
+    bottom: 8%;
 }
 .marginTopXS {
     margin-top:3rem;
@@ -116,7 +116,13 @@ div.box {
 .date {
     color:#d3d3d3;
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     left: 2rem;
 }
+.SpH {
+    height: 177px;
+}
 
+.Percent29 {
+    width: 29%;
+}

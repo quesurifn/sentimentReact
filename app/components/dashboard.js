@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 
 import { SingleBar } from './SingleBar'
 import { EmojiSentiment } from './emoji'
+import { VictoryLine } from 'victory'
 
 
 class Dashboard extends React.Component {
@@ -14,6 +15,8 @@ class Dashboard extends React.Component {
         this.neg = 1;
         this.pos = 1;
         this.neu = 1;
+
+        this.counter = 0;
 
         this.state = {
             tweet: '',
@@ -25,18 +28,22 @@ class Dashboard extends React.Component {
             getBarPos: this.getDataOne(),
             getBarNeg: this.getDataTwo(),
             getBarNeu: this.getDataThree(),
-            now: ''
+            now: '',
+            sentArr: []
         };
     };
     
+
 
     componentDidMount() {
         var connection = new WebSocket('ws://trump-sentiment.herokuapp.com/');
         
         connection.onmessage = (e) => {
+            
             e = JSON.parse(e.data)
             console.log(e)
             if (e.main) {
+                this.counter++
                 this.pos = e.main.pos;
                 this.neg = e.main.neg;
                 this.neu = e.main.neu;
@@ -51,9 +58,10 @@ class Dashboard extends React.Component {
                     getBarPos: this.getDataOne(),
                     getBarNeg: this.getDataTwo(),
                     getBarNeu: this.getDataThree(),
-                    now: new Date().toLocaleDateString()
+                    now: new Date().toLocaleString(),
+                    sentArr: this.state.sentArr.concat({y: e.main.average, x: new Date().toLocaleTimeString(), i: this.counter })
                 })
-                
+               console.log(this.state.sentArr)
             }
         }
     }
@@ -85,7 +93,7 @@ class Dashboard extends React.Component {
                         <div className="Tweet">
                             {this.state.tweet}
                             <p className="subtitleTop">Tweets</p> 
-                            <small className="date">{this.state.now}</small>
+                            <small className="date">As of {this.state.now}</small>
                         </div>
                     </div>
                     <div className="col-md-2 marginR">
@@ -93,7 +101,7 @@ class Dashboard extends React.Component {
                             <SingleBar data={this.state.getBarPos } fillColor={"RoyalBlue"} />  
                             <p className="subtitle">Positive Tweets</p> 
                             <p className="tweetCounter">{this.state.pos}</p>
-                            <small className="date">{this.state.now}</small>
+                            <small className="date">As of {this.state.now}</small>
                         </div>
                     </div>
                     <div className="col-md-2 marginR">
@@ -101,7 +109,7 @@ class Dashboard extends React.Component {
                             <SingleBar data={ this.state.getBarNeg  } fillColor={"Tomato"} />  
                             <p className="subtitle">Negative Tweets</p> 
                             <p className="tweetCounter">{this.state.neg}</p>
-                            <small className="date">{this.state.now}</small>
+                            <small className="date">As of {this.state.now}</small>
                         </div>
                     </div>
                     <div className="col-md-2 marginR">
@@ -109,24 +117,38 @@ class Dashboard extends React.Component {
                             <SingleBar data={ this.state.getBarNeu } fillColor={"Orange"} />  
                             <p className="subtitle">Neutral Tweets</p> 
                             <p className="tweetCounter">{this.state.neu}</p>
-                            <small className="date">{this.state.now}</small>
+                            <small className="date">As of {this.state.now}</small>
                         </div>
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-2 marginR">
                         <div className="marginTopXS flexStacked">
                             <div className="fixedH box marginTop15">
                                 <span className="bigNum">{this.state.average}</span>
                                 <p className="subtitleTop">Score</p> 
-                                <small className="date">{this.state.now}</small>
+                                <small className="date">As of {this.state.now}</small>
                             </div>
                             <div className="fixedH box">
                                 <EmojiSentiment className="bigNum" score={this.state.average} />
                                 <p className="subtitleTop">Overall Sentiment</p>
-                                <small className="date">{this.state.now}</small>
+                                <small className="date">As of {this.state.now}</small>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div className="col-md-3 Percent29">
+                        <div className="marginTopXS box SpH">
+                          <p className="subtitle">Sentiment Trend</p> 
+                          <VictoryLine
+                        data={this.state.sentArr}
+                        domain={{ y: [-2, 2] }}
+                        style={{ data: {strokeWidth: 3, stroke: "RoyalBlue"}, tickLabels: {stroke: "gray"}, labels: {stroke: "LightGray"}    }}
+                        labels={(d) => d.i % 20 === 0 || d.i === 1 ? d.label = d.x + "S: " + d.y : ""}
+                        width={800}
+                        height={300}
+                        />
+                        <small className="date">As of {this.state.now}</small>
+                        </div>
+                    </div>
+                </div>  
             </div>
         );
     }
