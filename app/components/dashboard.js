@@ -17,7 +17,8 @@ class Dashboard extends React.Component {
             overallSentiment: 0,
             pos: 0,
             neg: 0,
-            neu: 0
+            neu: 0,
+            average: 0
         }
     }
     
@@ -34,7 +35,8 @@ class Dashboard extends React.Component {
                     overallSentiment: e.main.sentiment.score,
                     pos: e.main.pos,
                     neg: e.main.neg,
-                    neu: e.main.neu
+                    neu: e.main.neu,
+                    average: e.main.average
                 })
             }
         }
@@ -74,11 +76,11 @@ class Dashboard extends React.Component {
                     <div className="col-md-2">
                         <div className="marginTopXS flexStacked">
                             <div className="fixedH box marginTop15">
-                                <span className="bigNum">{this.state.overallSentiment}</span>
+                                <span className="bigNum">{this.state.average}</span>
                                 <p className="subtitleTop">Score</p> 
                             </div>
                             <div className="fixedH box">
-                                <EmojiSentiment className="bigNum" score={this.state.overallSentiment} />
+                                <EmojiSentiment className="bigNum" score={this.state.average} />
                                 <p className="subtitleTop">Overall Sentiment</p>
                             </div>
                         </div>
