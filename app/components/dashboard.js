@@ -1,20 +1,33 @@
 import React from 'react'
 import styles from '../styles.css'
 
+
 import { Link } from 'react-router'
 
 
 import { SingleBar } from './SingleBar'
+import { MapComponent } from './Map'
 import { EmojiSentiment } from './emoji'
-import { VictoryLine } from 'victory'
+import { VictoryLine} from 'victory'
+import { VictoryPie } from 'victory-pie'
 
 
-class Dashboard extends React.Component {
+
+
+
+
+
+export default class Dashboard extends React.Component {
+
     constructor() {
         super();
         this.neg = 1;
         this.pos = 1;
         this.neu = 1;
+        this.total = 0;
+        this.neuPercent = 0;
+        this.negPercent = 0;
+        this.posPercent = 0;
 
         this.counter = 0;
 
@@ -29,17 +42,39 @@ class Dashboard extends React.Component {
             getBarNeg: this.getDataTwo(),
             getBarNeu: this.getDataThree(),
             now: '',
-            sentArr: []
+            sentArr: [],
+            percentage:[]
         };
     };
     
 
 
     componentDidMount() {
+        
         var connection = new WebSocket('ws://trump-sentiment.herokuapp.com/');
         
         connection.onmessage = (e) => {
+            var one,two,three;
+
+            this.state.percentage.length = 0;
+            var total = this.neg + this.pos + this.neu;
+
+            var negPercent = parseFloat( ((this.neg / total) * 100).toFixed(2) )
+
+            var posPercent = parseFloat( ((this.pos / total) * 100).toFixed(2) )
+
+            var neuPercent = parseFloat ( ((this.neu / total) * 100).toFixed(2) ) 
+
+
+        
+
+            var one = [{x: "Negative", y: negPercent}]
+            var two = [{x: "Positive", y: posPercent}]
+            var three = [{x: "Neutral", y: neuPercent}]
+
+            var concatedPercent = one.concat(two, three)
             
+
             e = JSON.parse(e.data)
             console.log(e)
             if (e.main) {
@@ -47,6 +82,9 @@ class Dashboard extends React.Component {
                 this.pos = e.main.pos;
                 this.neg = e.main.neg;
                 this.neu = e.main.neu;
+
+                
+                
 
                 this.setState({
                     tweet: e.main.featuredTweet,
@@ -59,7 +97,8 @@ class Dashboard extends React.Component {
                     getBarNeg: this.getDataTwo(),
                     getBarNeu: this.getDataThree(),
                     now: new Date().toLocaleString(),
-                    sentArr: this.state.sentArr.concat({y: e.main.average, x: new Date().toLocaleTimeString(), i: this.counter })
+                    sentArr: this.state.sentArr.concat({y: e.main.average, x: new Date().toLocaleTimeString(), i: this.counter }),
+                    percentage: this.state.percentage.concat(concatedPercent)
                 })
                console.log(this.state.sentArr)
             }
@@ -84,7 +123,9 @@ class Dashboard extends React.Component {
 
 
     render() {
+
         const singleFillColor = '#327FC5';
+        
 
         return (
             <div className="container-fluid">
@@ -148,11 +189,52 @@ class Dashboard extends React.Component {
                         <small className="date">As of {this.state.now}</small>
                         </div>
                     </div>
-                </div>  
+                </div>
+                <div className="row">
+                    <div className="col-md-4 marginR">
+                        <div className="marginTopXS box MpH">
+                            <p className="subtitle">Percentage of Tweets</p> 
+                            <VictoryPie 
+                                data={this.state.percentage}
+
+                                innerRadius={100}
+                                colorScale={["tomato", "RoyalBlue", "Orange" ]}
+                                style={{tickLabels: {stroke: "#303030"}, labels:{stroke: "#303030"}}}
+                            />
+                                <div className="inlineLegened">
+                                    <div className="legenedBoxPos">
+                                    </div>
+                                    <span className="legenedSpan">Positive</span>
+                                    <div className="legenedBoxNeg">
+                                    </div>
+                                    <span className="legenedSpan">Negative</span>
+                                    <div className="legenedBoxNeu">
+                                    </div>
+                                    <span className="legenedSpan">Neutral</span>
+                                    </div>
+                        
+                        </div>
+                        <small className="date">As of {this.state.now}</small>
+                    </div> 
+            
+                <div className="col-md-2 i-2 marginR">
+                    <MapComponent now={this.state.now} title={"Postive Locations"} /> 
+                </div>
+
+                <div className="col-md-2 i-2 marginR">
+                    <MapComponent now={this.state.now} title={"Negative Locations"} /> 
+                </div>
+
+                <div className="col-md-2 i-2">
+                    <MapComponent now={this.state.now} title={"Neutral Locations"} /> 
+                </div>
+
+               
+
             </div>
+        
+        </div>
         );
     }
 }
 
-
-export default Dashboard

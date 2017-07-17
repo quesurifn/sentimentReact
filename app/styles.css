@@ -71,7 +71,7 @@ div.box {
     width:100%;
 }
 
-.col-md-2, .col-md-3 {
+.col-md-2, .col-md-3, .col-md-4 {
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
@@ -125,4 +125,45 @@ div.box {
 
 .Percent29 {
     width: 29%;
+}
+.legenedSpan {
+    color:white;
+}
+.legenedBoxPos {
+    height:15px;
+    width:15px;
+    background: royalblue;
+    margin: 0 5px;
+}
+.legenedBoxNeg {
+    height: 15px;
+    width: 15px;
+    background: tomato;
+    margin:0 5px;
+}
+.legenedBoxNeu {
+    height: 15px;
+    width: 15px;
+    background: orange;
+    margin:0 5px;
+}
+.inlineLegened{ 
+    display: flex;
+    position: relative;
+    bottom: .5rem;
+    position: absolute;
+    right: 1rem;
+}
+.Mph {
+    height:400px;
+}
+.leaflet-container {
+    height: 350px;
+    top:7rem;
+}
+.fourEighty {
+    height: 480px;
+}
+.i-2 {
+ width:302px;
 }
