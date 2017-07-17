@@ -167,3 +167,14 @@ div.box {
 .i-2 {
  width:302px;
 }
+@media screen and (max-width:992px) {
+    .col-md-2, .col-md-3, .col-md-4 {
+        width: 100% !important;
+    }
+}
+@media screen and (max-width:500px) {
+    .tweetCounter {
+        font-size: 100px;
+        bottom: 35%;
+    }
+}

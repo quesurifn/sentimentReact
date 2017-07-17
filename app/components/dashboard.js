@@ -43,7 +43,10 @@ export default class Dashboard extends React.Component {
             getBarNeu: this.getDataThree(),
             now: '',
             sentArr: [],
-            percentage:[]
+            percentage:[],
+            posLoc: [],
+            negLoc: [],
+            neuLoc: []
         };
     };
     
@@ -54,8 +57,10 @@ export default class Dashboard extends React.Component {
         var connection = new WebSocket('ws://trump-sentiment.herokuapp.com/');
         
         connection.onmessage = (e) => {
-            var one,two,three;
 
+
+
+            var one,two,three;
             this.state.percentage.length = 0;
             var total = this.neg + this.pos + this.neu;
 
@@ -101,7 +106,27 @@ export default class Dashboard extends React.Component {
                     percentage: this.state.percentage.concat(concatedPercent)
                 })
                console.log(this.state.sentArr)
-            }
+            } else {
+                const that = this;
+                e.location.forEach(function(elem) {
+                  
+                    const latlng = elem.location
+               
+                    if(elem.sentiment.score > 0) {
+                        that.state.posLoc.push(latlng)
+                        console.log('pos fired')
+                    } else if (elem.sentiment.score < 0) {
+                        that.state.negLoc.push(latlng)
+                        console.log('neg fired')
+                    } else if (elem.sentiment.score === 0) {
+                        that.state.neuLoc.push(latlng) 
+                        console.log('neutral fired')
+                    }
+                })
+
+                console.log(that.state.posLoc)
+               
+            } // else 
         }
     }
 
@@ -218,15 +243,15 @@ export default class Dashboard extends React.Component {
                     </div> 
             
                 <div className="col-md-2 i-2 marginR">
-                    <MapComponent now={this.state.now} title={"Postive Locations"} /> 
+                    <MapComponent now={this.state.now} title={"Postive Locations"} locations={this.state.posLoc} /> 
                 </div>
 
                 <div className="col-md-2 i-2 marginR">
-                    <MapComponent now={this.state.now} title={"Negative Locations"} /> 
+                    <MapComponent now={this.state.now} title={"Negative Locations"} locations={this.state.neuLoc} /> 
                 </div>
 
                 <div className="col-md-2 i-2">
-                    <MapComponent now={this.state.now} title={"Neutral Locations"} /> 
+                    <MapComponent now={this.state.now} title={"Neutral Locations"} locations={this.state.negLoc} /> 
                 </div>
 
                
