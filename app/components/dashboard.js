@@ -10,12 +10,8 @@ import { MapComponent } from './Map'
 import { EmojiSentiment } from './emoji'
 import { VictoryLine} from 'victory'
 import { VictoryPie } from 'victory-pie'
-
-
-
-
-
-
+import { TagCloud } from "react-tagcloud";
+const countThem = require('../../utils/frequency.js').countThem
 
 export default class Dashboard extends React.Component {
 
@@ -28,6 +24,7 @@ export default class Dashboard extends React.Component {
         this.neuPercent = 0;
         this.negPercent = 0;
         this.posPercent = 0;
+        this.words = [];
 
         this.counter = 0;
 
@@ -49,7 +46,6 @@ export default class Dashboard extends React.Component {
             neuLoc: []
         };
     };
-    
 
 
     componentDidMount() {
@@ -57,8 +53,8 @@ export default class Dashboard extends React.Component {
         var connection = new WebSocket('ws://trump-sentiment.herokuapp.com/');
         
         connection.onmessage = (e) => {
-
-
+            
+            
 
             var one,two,three;
             this.state.percentage.length = 0;
@@ -83,6 +79,11 @@ export default class Dashboard extends React.Component {
             e = JSON.parse(e.data)
             console.log(e)
             if (e.main) {
+
+
+                this.words = countThem(e.main.sentiment.tokens)
+
+
                 this.counter++
                 this.pos = e.main.pos;
                 this.neg = e.main.neg;
@@ -253,9 +254,25 @@ export default class Dashboard extends React.Component {
                 <div className="col-md-2 i-2">
                     <MapComponent now={this.state.now} title={"Neutral Locations"} locations={this.state.negLoc} /> 
                 </div>
+                
+            </div>
+            <div className="row">
+                <div className="col-md-6 marginR"> 
+                     <div className="marginTopXS box MpH">
+                         <p className="subtitle">Positive Words</p> 
 
-               
 
+                           <small className="date">As of {this.state.now}</small>
+                     </div>
+                </div>
+                <div className="col-md-6 marginR"> 
+                     <div className="marginTopXS box MpH">
+                          <p className="subtitle">Negative Words</p> 
+                        
+
+                            <small className="date">As of {this.state.now}</small>
+                     </div>
+                </div>
             </div>
         
         </div>
