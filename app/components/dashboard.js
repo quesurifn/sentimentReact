@@ -256,25 +256,7 @@ export default class Dashboard extends React.Component {
                 </div>
                 
             </div>
-            <div className="row">
-                <div className="col-md-6 marginR"> 
-                     <div className="marginTopXS box MpH">
-                         <p className="subtitle">Positive Words</p> 
-
-
-                           <small className="date">As of {this.state.now}</small>
-                     </div>
-                </div>
-                <div className="col-md-6 marginR"> 
-                     <div className="marginTopXS box MpH">
-                          <p className="subtitle">Negative Words</p> 
-                        
-
-                            <small className="date">As of {this.state.now}</small>
-                     </div>
-                </div>
-            </div>
-        
+           
         </div>
         );
     }

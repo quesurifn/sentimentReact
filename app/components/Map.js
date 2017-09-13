@@ -1,19 +1,28 @@
 import React from 'react'
 import styles from '../styles.css'
 
-import { Map, TileLayer, Marker } from 'react-leaflet';
+import { Map, TileLayer, Marker, Icon } from 'react-leaflet';
 
-
+import icon from '../public/marker-icon.png'
+import Leaflet from 'leaflet'
 
 
 
 
 export class MapComponent extends React.Component {
+    
    
 
     render() {
+
+        const image = new Leaflet.Icon({
+                iconUrl: icon,
+                iconSize:     [20, 20], // size of the icon
+                iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            })
+
         const markers = this.props.locations.map((e, index) => (
-            <Marker key={index} position={[e.lat, e.lng]} />
+            <Marker key={index} position={[e.lat, e.lng]} icon={image} />
         ));
         console.log(markers)
 
